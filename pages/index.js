@@ -10,8 +10,8 @@ const mapContainerStyle = {
   height: '100vh',
 };
 const center = {
-  lat: 19.076,
-  lng: 72.8777,
+  lat: 20.5937,
+  lng: 78.9629,
 };
 
 export default function IndexPage({ trends }) {
@@ -65,7 +65,7 @@ export default function IndexPage({ trends }) {
         <div className="absolute">
           <GoogleMap
             mapContainerStyle={mapContainerStyle}
-            zoom={7}
+            zoom={5}
             center={center}
             onClick={(e) => onMapClick(e)}
             options={options}
