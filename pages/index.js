@@ -70,7 +70,15 @@ export default function IndexPage({ trends }) {
             onClick={(e) => onMapClick(e)}
             options={options}
           >
-            <Marker position={{ lat: marker.lat, lng: marker.lng }} />
+            <Marker
+              position={{ lat: marker.lat, lng: marker.lng }}
+              icon={{
+                url: '/Twitter.png',
+                origin: new window.google.maps.Point(0, 0),
+                anchor: new window.google.maps.Point(15, 15),
+                scaledSize: new window.google.maps.Size(30, 30),
+              }}
+            />
           </GoogleMap>
         </div>
         <div className="relative w-80 overflow-hidden float-right">
@@ -81,15 +89,7 @@ export default function IndexPage({ trends }) {
   );
 }
 
-// export async function getStaticProps() {
-//   const res = await fetch(`${baseUrl}/api/trends`);
-//   const data = await res.json();
-//   return {
-//     props: { trends: data },
-//   };
-// }
-
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const res = await fetch(`${baseUrl}/api/trends`);
   const data = await res.json();
   return {
