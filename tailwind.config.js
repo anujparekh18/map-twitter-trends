@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       colors: {
         'accent-1': '#333',
+        'dark-blue': '#15202b',
       },
     },
   },
@@ -12,4 +13,4 @@ module.exports = {
     extend: {},
   },
   plugins: [],
-}
+};

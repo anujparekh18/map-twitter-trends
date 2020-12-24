@@ -1,14 +1,98 @@
-import Nav from '../components/nav'
+import { useState } from 'react';
+import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+import Trends from '../components/trends';
+import Head from 'next/head';
+import baseUrl from '../helpers/baseUrl';
 
-export default function IndexPage() {
+const libraries = ['places'];
+const mapContainerStyle = {
+  width: '100vw',
+  height: '100vh',
+};
+const center = {
+  lat: 19.076,
+  lng: 72.8777,
+};
+
+export default function IndexPage({ trends }) {
+  const [trendingTopic, setTrendingTopic] = useState(trends);
+  const [loading, setLoading] = useState(false);
+  const flagUrlIcon = `https://www.countryflags.io/${trendingTopic.flag}/flat/32.png`;
+  const worldIcon = '/World-icon.png';
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API,
+    libraries,
+  });
+  const [marker, setMarker] = React.useState({ lat: 0, lng: 0 });
+
+  const options = {
+    disableDefaultUI: true,
+    zoomControl: true,
+  };
+
+  const onMapClick = async (e) => {
+    setLoading(true);
+    setMarker({ lat: e.latLng.lat(), lng: e.latLng.lng() });
+    try {
+      const res1 = await fetch(`${baseUrl}/api/trends`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ lat: e.latLng.lat(), lng: e.latLng.lng() }),
+      });
+      const res2 = await res1.json();
+      setTrendingTopic(res2);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  if (loadError) return 'Error loading maps';
+  if (!isLoaded) return 'Loading Maps';
+
   return (
     <div>
-      <Nav />
-      <div className="py-20">
-        <h1 className="text-5xl text-center text-gray-700 dark:text-gray-100">
-          Next.js + Tailwind CSS 2.0
-        </h1>
+      <Head>
+        <title>Map Twitter Trends</title>
+        <link
+          rel="icon"
+          href={`${trendingTopic.flag ? flagUrlIcon : worldIcon}`}
+        />
+      </Head>
+      <div className="w-screen">
+        <div className="absolute">
+          <GoogleMap
+            mapContainerStyle={mapContainerStyle}
+            zoom={7}
+            center={center}
+            onClick={(e) => onMapClick(e)}
+            options={options}
+          >
+            <Marker position={{ lat: marker.lat, lng: marker.lng }} />
+          </GoogleMap>
+        </div>
+        <div className="relative w-80 overflow-hidden float-right">
+          <Trends trends={trendingTopic} loading={loading} />
+        </div>
       </div>
     </div>
-  )
+  );
+}
+
+// export async function getStaticProps() {
+//   const res = await fetch(`${baseUrl}/api/trends`);
+//   const data = await res.json();
+//   return {
+//     props: { trends: data },
+//   };
+// }
+
+export async function getServerSideProps() {
+  const res = await fetch(`${baseUrl}/api/trends`);
+  const data = await res.json();
+  return {
+    props: { trends: data },
+  };
 }
