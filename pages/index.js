@@ -65,20 +65,22 @@ export default function IndexPage({ trends }) {
         <div className="absolute">
           <GoogleMap
             mapContainerStyle={mapContainerStyle}
-            zoom={5}
+            zoom={3}
             center={center}
             onClick={(e) => onMapClick(e)}
             options={options}
           >
-            <Marker
-              position={{ lat: marker.lat, lng: marker.lng }}
-              icon={{
-                url: '/Twitter.png',
-                origin: new window.google.maps.Point(0, 0),
-                anchor: new window.google.maps.Point(15, 15),
-                scaledSize: new window.google.maps.Size(30, 30),
-              }}
-            />
+            {trendingTopic.flag ? (
+              <Marker
+                position={{ lat: marker.lat, lng: marker.lng }}
+                icon={{
+                  url: '/Twitter.png',
+                  origin: new window.google.maps.Point(0, 0),
+                  anchor: new window.google.maps.Point(15, 15),
+                  scaledSize: new window.google.maps.Size(30, 30),
+                }}
+              />
+            ) : null}
           </GoogleMap>
         </div>
         <div className="relative w-80 overflow-hidden float-right">
