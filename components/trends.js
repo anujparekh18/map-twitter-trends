@@ -6,7 +6,7 @@ import twitter from 'react-useanimations/lib/twitter';
 export default function Trends({ trends, loading }) {
   const allTrends = trends[0].trends;
   return (
-    <div className="bg-opacity-25 bg-dark-blue py-4 rounded-bl-2xl">
+    <div className="bg-opacity-60 bg-dark-blue py-4 rounded-bl-2xl">
       <div className="h-12">
         <h2 className="font-sans font-semibold text-xl text-white text-center">
           Map Twitter Trends
