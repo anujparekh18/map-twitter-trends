@@ -83,8 +83,8 @@ export default function Trends({ trends, loading }) {
         </div>
         {show && (
           <div className="text-xs">
-            Twitter Trends is an app where you click on a map and shows you the
-            closest area's current Twitter trending topics and hashtags.
+            Map Twitter Trends is an app where you click on a map and shows you
+            the closest area's current Twitter trending topics and hashtags.
           </div>
         )}
       </div>
