@@ -1,5 +1,3 @@
-const { process } = require('autoprefixer');
-
 const baseUrl =
   process.env.NODE_ENV === 'production'
     ? 'https://map-twitter-trends.vercel.app'
